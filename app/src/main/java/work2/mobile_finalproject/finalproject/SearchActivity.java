@@ -308,9 +308,13 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
 
     // newMarker Tag 에 저장해둔 placeId로 장소에 대한 세부정보 획득
     private void getPlaceDetail(String placeId) {
-        List<com.google.android.libraries.places.api.model.Place.Field> placeFields = Arrays.asList(com.google.android.libraries.places.api.model.Place.Field.NAME,
-                com.google.android.libraries.places.api.model.Place.Field.ADDRESS, com.google.android.libraries.places.api.model.Place.Field.WEBSITE_URI,
-                com.google.android.libraries.places.api.model.Place.Field.PHONE_NUMBER, com.google.android.libraries.places.api.model.Place.Field.RATING);
+        List<com.google.android.libraries.places.api.model.Place.Field> placeFields = Arrays.asList(
+                com.google.android.libraries.places.api.model.Place.Field.ID,
+                com.google.android.libraries.places.api.model.Place.Field.NAME,
+                com.google.android.libraries.places.api.model.Place.Field.ADDRESS,
+                com.google.android.libraries.places.api.model.Place.Field.WEBSITE_URI,
+                com.google.android.libraries.places.api.model.Place.Field.PHONE_NUMBER,
+                com.google.android.libraries.places.api.model.Place.Field.RATING);
 
         FetchPlaceRequest request = FetchPlaceRequest.builder(placeId, placeFields).build();
 
@@ -334,6 +338,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
 
     private void callDetailActivity (com.google.android.libraries.places.api.model.Place place) {
         Intent intent = new Intent(SearchActivity.this, DetailActivity.class);
+        intent.putExtra("id", place.getId()); // 사진 가져올 때 필요함
         intent.putExtra("name",place.getName());
         intent.putExtra("address",place.getAddress());
         intent.putExtra("uri", place.getWebsiteUri());
@@ -345,7 +350,9 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
             intent.putExtra("rating", "no rating info");
         }
 
+        // 어떤 위치 보내는지 확인하기
         intent.putExtra("currentLoc", currentLoc);
+        intent.putExtra("keyword", "공원");
 
         startActivity(intent);
     }
