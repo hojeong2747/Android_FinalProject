@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_item1"
+        android:title="즐겨찾기"
+        android:icon="@drawable/ic_baseline_bookmark_24"/>
+    <item
+        android:id="@+id/menu_item2"
+        android:title="내가 쓴 리뷰"
+        android:icon="@drawable/ic_baseline_edit_24"/>
+    <item
+        android:id="@+id/menu_item3"
+        android:title="다른 공원 보기"
+        android:icon="@drawable/ic_baseline_search_24"/>
+    <!--    SearchActivity로     -->
+</menu>

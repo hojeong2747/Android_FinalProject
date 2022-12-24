@@ -1,7 +1,6 @@
 package work2.mobile_finalproject.finalproject;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,31 +10,40 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.ArrayList;
+
+public class BookmarkActivity extends AppCompatActivity {
+
+    ListView lvBookmark = null;
+    BookmarkDBHelper helper;
+    PlaceDBManager placeDBManager;
+    Cursor cursor;
+    BookmarkAdapter adapter;
+    ArrayList<PlaceDto> arrayList = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_bookmark);
+
+        lvBookmark = (ListView)findViewById(R.id.lvBookmark);
+        arrayList = new ArrayList();
+        helper = new BookmarkDBHelper(this);
+        placeDBManager = new PlaceDBManager(this);
+
+        adapter = new BookmarkAdapter(this, R.layout.listview_item1, null);
+        lvBookmark.setAdapter(adapter);
 
         this.settingSideNavBar();
-    }
-
-    public void onClick(View v) {
-        switch(v.getId()) {
-            case R.id.btnWalk:
-                Intent intent = new Intent(this, CurrentActivity.class);
-                startActivity(intent);
-                break;
-        }
     }
 
     // menu
@@ -48,10 +56,11 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected( MenuItem item) {
         switch (item.getItemId()) {
             case R.id.item01: // 첫 화면으로
-                Toast.makeText(this,"현재 첫 화면입니다." , Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
                 break;
             case R.id.item02: //앱 종료
-                AlertDialog.Builder  builder = new AlertDialog.Builder(MainActivity.this);
+                AlertDialog.Builder  builder = new AlertDialog.Builder(BookmarkActivity.this);
                 builder.setTitle("종료")
                         .setMessage("앱을 종료하시겠습니까?")
                         .setPositiveButton("종료", new DialogInterface.OnClickListener() {
@@ -81,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
 
         ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(
-                MainActivity.this,
+                BookmarkActivity.this,
                 drawLayout,
                 toolbar,
                 R.string.open,
@@ -98,18 +107,18 @@ public class MainActivity extends AppCompatActivity {
                 int id = menuItem.getItemId();
 
                 if (id == R.id.menu_item1){
-                    Intent intent = new Intent(MainActivity.this, BookmarkActivity.class);
+                    Intent intent = new Intent(BookmarkActivity.this, BookmarkActivity.class);
                     startActivity(intent);
                     Toast.makeText(getApplicationContext(), "즐겨찾기", Toast.LENGTH_SHORT).show();
                 }else if(id == R.id.menu_item2){
-                    Intent intent = new Intent(MainActivity.this, ReviewActivity.class);
+                    Intent intent = new Intent(BookmarkActivity.this, ReviewActivity.class);
                     startActivity(intent);
                     Toast.makeText(getApplicationContext(), "내가 쓴 리뷰", Toast.LENGTH_SHORT).show();
                 }else if(id == R.id.menu_item3){
-                    Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+                    Intent intent = new Intent(BookmarkActivity.this, SearchActivity.class);
+//                    intent.putExtra("currentLoc", currentLoc);
                     startActivity(intent);
                     Toast.makeText(getApplicationContext(), "다른 공원 보기", Toast.LENGTH_SHORT).show();
-                    // 메뉴 나누거나 하기 currentLoc 있는 곳부터 가능. SearchActivity에서 get으로 꺼내기 때문에
                 }
 
                 DrawerLayout drawer = findViewById(R.id.drawer_menu);
@@ -129,4 +138,5 @@ public class MainActivity extends AppCompatActivity {
             super.onBackPressed();
         }
     }
+
 }

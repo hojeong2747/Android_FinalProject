@@ -8,61 +8,38 @@
     android:orientation="vertical"
     android:background="#FFFFFFFF"
     android:id="@+id/drawer_menu"
-    tools:context=".CurrentActivity">
+    tools:context=".BookmarkActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".CurrentActivity">
+        tools:context=".BookmarkActivity">
 
         <TextView
-            android:id="@+id/tvCurrent"
+            android:id="@+id/tvBookmark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="80dp"
-            android:text="현재 위치입니다."
+            android:text="즐겨찾기 목록입니다."
             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <fragment
-            android:id="@+id/currentMap"
-            android:name="com.google.android.gms.maps.SupportMapFragment"
-            android:layout_width="0dp"
+        <ListView
+            android:id="@+id/lvBookmark"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            app:cameraTargetLat="@string/init_lat"
-            app:cameraTargetLng="@string/init_lng"
-            app:cameraZoom="17"
-            app:layout_constraintBottom_toTopOf="@+id/btnMove"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvCurrent"
-            app:uiZoomControls="true" />
-
-        <Button
-            android:id="@+id/btnMove"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="50dp"
-            android:backgroundTint="@color/purple_300"
-            android:onClick="onClick"
-            android:text="산책할 공원 살펴보기"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvBookmark"></ListView>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
 
     <include
         layout="@layout/toolbar"

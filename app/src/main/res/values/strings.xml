@@ -1,6 +1,10 @@
 <resources>
-    <string name="app_name">FinalProject</string>
+    <string name="app_name">Wanna go for a walk?</string>
     <string name="api_key">AIzaSyCwfkN2ho9eMD7xsIZqngOVpI-ohGBuOmk</string>
+
     <string name="init_lat">37.604094</string>
     <string name="init_lng">127.042463</string>
+
+    <string name="open">open</string>
+    <string name="close">close</string>
 </resources>

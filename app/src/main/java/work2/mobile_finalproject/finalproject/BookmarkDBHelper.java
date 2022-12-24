@@ -4,8 +4,6 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import androidx.annotation.Nullable;
-
 public class BookmarkDBHelper extends SQLiteOpenHelper {
     private final static String DB_NAME = "bookmark_db";
     public final static String TABLE_NAME = "bookmark_db_table";
