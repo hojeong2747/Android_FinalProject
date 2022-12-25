@@ -1,5 +1,6 @@
 package work2.mobile_finalproject.finalproject;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
 import android.view.LayoutInflater;
@@ -22,36 +23,38 @@ public class BookmarkAdapter extends CursorAdapter {
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup viewGroup) {
         View view = inflater.inflate(layout, viewGroup,false);
-        ViewHolder holder = new ViewHolder();
-        view.setTag(holder);
+        ViewHolder viewHolder = new ViewHolder();
+        view.setTag(viewHolder);
         return view;
     }
 
+    @SuppressLint("Range")
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        ViewHolder holder = (ViewHolder) view.getTag();
+        ViewHolder viewHolder = (ViewHolder) view.getTag();
 
+        // viewHolder 에 view 들을 담아놓는다. findViewById 호출 횟수 줄이기 위함
+        viewHolder.tvBMName = view.findViewById(R.id.tvBMName);
+        viewHolder.tvBMPhone = view.findViewById(R.id.tvBMAdress);
+        viewHolder.tvBMAddress = view.findViewById(R.id.tvBMPhone);
 
-        holder.tvBMName = view.findViewById(R.id.tvBMName);
-        holder.tvBMPhone = view.findViewById(R.id.tvBMAdress);
-        holder.tvBMAddress = view.findViewById(R.id.tvBMPhone);
-
-//        holder.tvBMName.setText(cursor.getString(cursor.getColumnIndex(BookmarkDBHelper.COL_NAME)));
-//
-//        boolean isPhone = true;
-//        try{
-//            cursor.getString(cursor.getColumnIndex(BookmarkDBHelper.COL_PHONE));
-//        }catch (NullPointerException e){
-//            holder.tvBMPhone.setText("전화번호 정보가 없습니다.");
-//            isPhone = false;
-//        }
-//        if(isPhone)
-//            holder.tvBMPhone.setText(cursor.getString(cursor.getColumnIndex(BookmarkDBHelper.COL_PHONE)));
-//
-//        holder.tvBMAddress.setText(cursor.getString(cursor.getColumnIndex(BookmarkDBHelper.COL_ADDRESS)));
+        // viewHolder 에 담은 view 값 설정
+        viewHolder.tvBMName.setText(cursor.getString(cursor.getColumnIndex(BookmarkDBHelper.COL_NAME)));
+        boolean isPhone = true;
+        try{
+            cursor.getString(cursor.getColumnIndex(BookmarkDBHelper.COL_PHONE));
+        }catch (NullPointerException e){
+            viewHolder.tvBMPhone.setText("전화번호 정보가 없습니다.");
+            isPhone = false;
+        }
+        if(isPhone)
+            viewHolder.tvBMPhone.setText(cursor.getString(cursor.getColumnIndex(BookmarkDBHelper.COL_PHONE)));
+        viewHolder.tvBMAddress.setText(cursor.getString(cursor.getColumnIndex(BookmarkDBHelper.COL_ADDRESS)));
     }
 
+    // static 클래스 선언언
     static class ViewHolder{
+        // 보관할 화면 요소들
         TextView tvBMName;
         TextView tvBMAddress;
         TextView tvBMPhone;

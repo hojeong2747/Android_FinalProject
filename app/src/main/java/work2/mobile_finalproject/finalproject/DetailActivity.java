@@ -177,7 +177,7 @@ public class DetailActivity extends AppCompatActivity {
                 break;
             case R.id.btnBookMark:
 
-                AlertDialog.Builder  markBuilder = new AlertDialog.Builder(DetailActivity.this);
+                AlertDialog.Builder markBuilder = new AlertDialog.Builder(DetailActivity.this);
                 markBuilder.setTitle("즐겨찾기")
                         .setMessage("즐겨찾기에 추가하시겠습니까?")
                         .setPositiveButton("추가", new DialogInterface.OnClickListener() {
@@ -185,19 +185,27 @@ public class DetailActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int which) {
                                 placeDBManager = new PlaceDBManager(DetailActivity.this);
                                 boolean result = placeDBManager.addNewBookmark(placeDto);
-                                if(result)
-                                    Toast.makeText(DetailActivity.this, "즐겨찾기에 추가", Toast.LENGTH_SHORT).show();
+                                if(result) {
+                                    Toast.makeText(DetailActivity.this, "즐겨찾기에 추가됨", Toast.LENGTH_SHORT).show();
+                                    AlertDialog.Builder moveBuilder = new AlertDialog.Builder(DetailActivity.this);
+                                    moveBuilder.setTitle("즐겨찾기에 추가되었습니다.")
+                                            .setMessage("즐겨찾기로 이동하시겠습니까?")
+                                            .setPositiveButton("이동", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialogInterface, int i) {
+                                                    Intent intent = new Intent(DetailActivity.this, BookmarkActivity.class);
+                                                    startActivity(intent);
+                                                }
+                                            })
+                                            .setNegativeButton("취소", null)
+                                            .setCancelable(false)
+                                            .show();
+                                }
                             }
                         })
                         .setNegativeButton("취소", null)
                         .setCancelable(false)
                         .show();
-
-                //즐겨찾기 구현
-//                placeDBManager = new PlaceDBManager(this);
-//                boolean result = placeDBManager.addNewBookmark(placeDto);
-//                if(result)
-//                    Toast.makeText(this, "즐겨찾기에 추가!", Toast.LENGTH_SHORT).show();
             case R.id.btnReview:
                 // 리뷰 작성
 
