@@ -5,13 +5,18 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -60,6 +65,8 @@ public class DetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+
+        createNotificationChannel(); // onCreate()에서 알림 채널 생성
 
         Places.initialize(getApplicationContext(), getResources().getString(R.string.api_key));
         placesClient = Places.createClient(this);
@@ -177,7 +184,6 @@ public class DetailActivity extends AppCompatActivity {
 
                 break;
             case R.id.btnBookMark:
-
                 AlertDialog.Builder markBuilder = new AlertDialog.Builder(DetailActivity.this);
                 markBuilder.setTitle("즐겨찾기")
                         .setMessage("즐겨찾기에 추가하시겠습니까?")
@@ -187,7 +193,21 @@ public class DetailActivity extends AppCompatActivity {
                                 placeDBManager = new PlaceDBManager(DetailActivity.this);
                                 boolean result = placeDBManager.addNewBookmark(placeDto);
                                 if(result) {
-                                    Toast.makeText(DetailActivity.this, "즐겨찾기에 추가됨", Toast.LENGTH_SHORT).show();
+                                    // 알림 생성
+                                    NotificationCompat.Builder builder = new NotificationCompat.Builder(DetailActivity.this, "MY_CHANNEL")
+                                            .setSmallIcon(R.mipmap.ic_launcher)
+                                            .setContentTitle("알림")
+                                            .setContentText("즐겨찾기 추가")
+                                            .setStyle(new NotificationCompat.BigTextStyle()
+                                                    .bigText("즐겨찾기 추가\n즐겨찾기를 추가하였습니다."))
+                                            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                                            .setAutoCancel(true);
+
+                                    // 알림 실행
+                                    NotificationManagerCompat notificationManager = NotificationManagerCompat.from(DetailActivity.this);
+                                    int notificationId = 100; // 알림 구분 위한 정수형 식별자 지정
+                                    notificationManager.notify(notificationId, builder.build()); // 생성 알림 실행
+
                                     AlertDialog.Builder moveBuilder = new AlertDialog.Builder(DetailActivity.this);
                                     moveBuilder.setTitle("즐겨찾기에 추가되었습니다.")
                                             .setMessage("즐겨찾기로 이동하시겠습니까?")
@@ -207,6 +227,7 @@ public class DetailActivity extends AppCompatActivity {
                         .setNegativeButton("취소", null)
                         .setCancelable(false)
                         .show();
+                break; // 안 써서 오류 났었음
             case R.id.btnReview:
                 // 리뷰 작성
                 Intent intent = new Intent(DetailActivity.this, ReviewAddActivity.class);
@@ -221,6 +242,21 @@ public class DetailActivity extends AppCompatActivity {
         }
     }
 
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT>= Build.VERSION_CODES.O) {
+            CharSequence name = getString(R.string.channel_name);       // strings.xml 에 채널명 기록
+            String description = getString(R.string.channel_description);       // strings.xml에 채널 설명 기록
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;    // 알림의 우선순위 지정
+            NotificationChannel channel = new NotificationChannel(getString(R.string.CHANNEL_ID), name, importance);    // CHANNEL_ID 지정
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);  // 채널 생성
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
 
     // menu
     public boolean onCreateOptionsMenu(Menu menu) {

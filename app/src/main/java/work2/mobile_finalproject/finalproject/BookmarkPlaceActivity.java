@@ -74,7 +74,7 @@ public class BookmarkPlaceActivity extends AppCompatActivity implements OnMapRea
 
     private GoogleMap mGoogleMap;
     private MarkerOptions markerOptions;
-    private LatLngResultReceiver latLngResultReceiver;
+    private geocodingResultReceiver geocodingResultReceiver;
 
     private PlacesClient placesClient;
     LatLng currentLoc;
@@ -96,7 +96,7 @@ public class BookmarkPlaceActivity extends AppCompatActivity implements OnMapRea
 
         address = placeDto.getAddress();
         Log.d("recAddress : ", address);
-        latLngResultReceiver = new LatLngResultReceiver(new Handler());
+        geocodingResultReceiver = new geocodingResultReceiver(new Handler());
 
         currentLoc = new LatLng(placeDto.getLat(), placeDto.getLng());
         Log.d("currentLoc : ", String.valueOf(currentLoc.latitude + " , " + currentLoc.longitude));
@@ -220,7 +220,7 @@ public class BookmarkPlaceActivity extends AppCompatActivity implements OnMapRea
         @Override
         public void onPlacesFinished() {
             if (count == 0) {
-                startLatLngService();
+                placeGeocoding();
             }
         }
 
@@ -279,16 +279,16 @@ public class BookmarkPlaceActivity extends AppCompatActivity implements OnMapRea
 
         // 즐겨찾기 목록에 위치 실 주소는 있음. Geocoding 수행
         /* 주소 → 위도/경도 변환 IntentService 실행 */
-        private void startLatLngService() {
-            Intent intent = new Intent(BookmarkPlaceActivity.this, FetchLatLngIntentService.class);
-            intent.putExtra(Constants.RECEIVER, latLngResultReceiver);
+        private void placeGeocoding() {
+            Intent intent = new Intent(BookmarkPlaceActivity.this, FetchPlaceGeocoding.class);
+            intent.putExtra(Constants.RECEIVER, geocodingResultReceiver);
             intent.putExtra(Constants.ADDRESS_DATA_EXTRA, address);
             startService(intent);
         }
 
         /* 주소 → 위도/경도 변환 ResultReceiver */
-        class LatLngResultReceiver extends ResultReceiver {
-            public LatLngResultReceiver(Handler handler) {
+        class geocodingResultReceiver extends ResultReceiver {
+            public geocodingResultReceiver(Handler handler) {
                 super(handler);
             }
 

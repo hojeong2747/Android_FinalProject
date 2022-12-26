@@ -5,16 +5,22 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.FileProvider;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.annotation.SuppressLint;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -61,6 +67,8 @@ public class ReviewAddActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_review_add);
+
+        createNotificationChannel(); // onCreate()에서 알림 채널 생성
 
         reviewDBHelper = new PlaceDBHelper(this);
 
@@ -220,7 +228,22 @@ public class ReviewAddActivity extends AppCompatActivity {
                 reviewDBManager = new PlaceDBManager(this);
                 boolean result = reviewDBManager.addNewReview(reviewDto);
                 if(result) {
-                    Toast.makeText(this, "리뷰 저장됨", Toast.LENGTH_SHORT).show();
+                    // 알림 생성
+                    NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "MY_CHANNEL")
+                            .setSmallIcon(R.mipmap.ic_launcher)
+                            .setContentTitle("알림")
+                            .setContentText("리뷰 저장")
+                            .setStyle(new NotificationCompat.BigTextStyle()
+                                    .bigText("리뷰 저장\n리뷰를 저장하였습니다."))
+                            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                            .setAutoCancel(true);
+
+                    // 알림 실행
+                    NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+                    int notificationId = 100; // 알림 구분 위한 정수형 식별자 지정
+                    notificationManager.notify(notificationId, builder.build()); // 생성 알림 실행
+
+
                     AlertDialog.Builder moveBuilder = new AlertDialog.Builder(ReviewAddActivity.this);
                     moveBuilder.setTitle("리뷰를 저장하였습니다.")
                             .setMessage("내가 쓴 리뷰 목록으로 이동하시겠습니까?")
@@ -252,6 +275,22 @@ public class ReviewAddActivity extends AppCompatActivity {
                 }
                 finish();
                 break;
+        }
+    }
+
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT>= Build.VERSION_CODES.O) {
+            CharSequence name = getString(R.string.channel_name);       // strings.xml 에 채널명 기록
+            String description = getString(R.string.channel_description);       // strings.xml에 채널 설명 기록
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;    // 알림의 우선순위 지정
+            NotificationChannel channel = new NotificationChannel(getString(R.string.CHANNEL_ID), name, importance);    // CHANNEL_ID 지정
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);  // 채널 생성
+            notificationManager.createNotificationChannel(channel);
         }
     }
 

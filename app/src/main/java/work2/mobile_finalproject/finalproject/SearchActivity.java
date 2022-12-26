@@ -118,7 +118,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
 //                    Toast.makeText(SearchActivity.this, "if 문 안에 들어옴", Toast.LENGTH_SHORT).show();
                     for(String key : markerMap2.keySet()) {
                         if(key.equals(keyWord)) {
-                            markerMap2.get(key).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                            markerMap2.get(key).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
                             Toast.makeText(SearchActivity.this, "검색 결과입니다.", Toast.LENGTH_SHORT).show();
 
                             // 검색 결과 위치로 이동
@@ -258,7 +258,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
                 for(Place place : places){
                     markerOptions.title(place.getName())
                             .position(new LatLng(place.getLatitude(),place.getLongitude()))
-                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
 
                     Marker newMarker = mGoogleMap.addMarker(markerOptions);
                     newMarker.setTag(place.getPlaceId()); // Tag에 PlaceId 저장
@@ -292,7 +292,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
                 for(Place place : places){
                     markerOptions.title(place.getName())
                             .position(new LatLng(place.getLatitude(),place.getLongitude()))
-                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
 
                     Marker newMarker = mGoogleMap.addMarker(markerOptions);
                     newMarker.setTag(place.getPlaceId()); // Tag에 PlaceId 저장

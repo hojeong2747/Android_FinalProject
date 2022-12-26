@@ -9,7 +9,7 @@
         android:id="@+id/tvRVNameItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="112dp"
+        android:layout_marginStart="12dp"
         android:layout_marginTop="16dp"
         android:text="공원명"
         android:textSize="20sp"
@@ -20,27 +20,27 @@
         android:id="@+id/tvRVR"
         android:layout_width="241dp"
         android:layout_height="54dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="12dp"
         android:isIndicator="true"
         android:progressTint="#FFEB3B"
-        app:layout_constraintStart_toStartOf="@+id/tvRVDateItem"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvRVDateItem" />
 
     <TextView
         android:id="@+id/tvRVDateItem"
         android:layout_width="64dp"
         android:layout_height="18dp"
+        android:layout_marginStart="12dp"
         android:layout_marginTop="8dp"
         android:text="날짜"
-        app:layout_constraintStart_toStartOf="@+id/tvRVNameItem"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvRVNameItem" />
 
     <ImageView
         android:id="@+id/ivRV"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginStart="3dp"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tvRVNameItem"
         tools:srcCompat="@tools:sample/avatars" />
 

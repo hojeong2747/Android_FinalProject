@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class FetchLatLngIntentService extends IntentService  {
+public class FetchPlaceGeocoding extends IntentService  {
     final static String TAG = "FetchLatLng";
     private Geocoder geocoder;
     private ResultReceiver receiver;
@@ -25,7 +25,7 @@ public class FetchLatLngIntentService extends IntentService  {
      * @param name
      * @deprecated
      */
-    public FetchLatLngIntentService(String name) {
+    public FetchPlaceGeocoding(String name) {
         super(name);
     }
 
