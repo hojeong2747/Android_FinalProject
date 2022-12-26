@@ -436,8 +436,6 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
                     Intent intent = new Intent(SearchActivity.this, ReviewActivity.class);
                     startActivity(intent);
                     Toast.makeText(getApplicationContext(), "내가 쓴 리뷰", Toast.LENGTH_SHORT).show();
-                }else if(id == R.id.menu_item3){
-                    Toast.makeText(getApplicationContext(), "현재 페이지에서 가능합니다.", Toast.LENGTH_SHORT).show();
                 }
 
                 DrawerLayout drawer = findViewById(R.id.drawer_menu);

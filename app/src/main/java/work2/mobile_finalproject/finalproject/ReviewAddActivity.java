@@ -12,7 +12,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -23,10 +22,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,7 +33,6 @@ import com.google.android.material.navigation.NavigationView;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 
 public class ReviewAddActivity extends AppCompatActivity {
@@ -185,7 +181,7 @@ public class ReviewAddActivity extends AppCompatActivity {
 
     public void onClick(View v) {
         switch(v.getId()) {
-            case R.id.btnSave:
+            case R.id.btnAddSave:
 //                DB에 촬영한 사진의 파일 경로 및 메모 저장
                 String date = etDate.getText().toString();
                 String content = etContent.getText().toString();
@@ -249,7 +245,7 @@ public class ReviewAddActivity extends AppCompatActivity {
                 }
                 break;
 
-            case R.id.btnCancel:
+            case R.id.btnAddCancel:
                 if(mCurrentPhotoPath != null) {
                     File file = new File(mCurrentPhotoPath);
                     file.delete();
@@ -327,8 +323,6 @@ public class ReviewAddActivity extends AppCompatActivity {
                     Intent intent = new Intent(ReviewAddActivity.this, ReviewActivity.class);
                     startActivity(intent);
                     Toast.makeText(getApplicationContext(), "내가 쓴 리뷰", Toast.LENGTH_SHORT).show();
-                }else if(id == R.id.menu_item3){
-                    Toast.makeText(getApplicationContext(), "현재 페이지에서 가능합니다.", Toast.LENGTH_SHORT).show();
                 }
 
                 DrawerLayout drawer = findViewById(R.id.drawer_menu);

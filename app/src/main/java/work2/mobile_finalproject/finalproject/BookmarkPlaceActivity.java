@@ -510,11 +510,6 @@ public class BookmarkPlaceActivity extends AppCompatActivity implements OnMapRea
                         Intent intent = new Intent(BookmarkPlaceActivity.this, ReviewActivity.class);
                         startActivity(intent);
                         Toast.makeText(getApplicationContext(), "내가 쓴 리뷰", Toast.LENGTH_SHORT).show();
-                    } else if (id == R.id.menu_item3) {
-                        Intent intent = new Intent(BookmarkPlaceActivity.this, SearchActivity.class);
-//                    intent.putExtra("currentLoc", currentLoc);
-                        startActivity(intent);
-                        Toast.makeText(getApplicationContext(), "다른 공원 보기", Toast.LENGTH_SHORT).show();
                     }
 
                     DrawerLayout drawer = findViewById(R.id.drawer_menu);

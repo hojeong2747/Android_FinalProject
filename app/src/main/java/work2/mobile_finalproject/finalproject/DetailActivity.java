@@ -215,7 +215,7 @@ public class DetailActivity extends AppCompatActivity {
                 intent.putExtra("phone", phone);
                 startActivity(intent);
                 break;
-            case R.id.btnSave:
+            case R.id.btnAddSave:
                 finish();
                 break;
         }
@@ -290,9 +290,6 @@ public class DetailActivity extends AppCompatActivity {
                     Intent intent = new Intent(DetailActivity.this, ReviewActivity.class);
                     startActivity(intent);
                     Toast.makeText(getApplicationContext(), "내가 쓴 리뷰", Toast.LENGTH_SHORT).show();
-                }else if(id == R.id.menu_item3){
-                    finish();
-                    // 이전으로
                 }
 
                 DrawerLayout drawer = findViewById(R.id.drawer_menu);

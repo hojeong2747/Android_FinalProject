@@ -105,11 +105,6 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent = new Intent(MainActivity.this, ReviewActivity.class);
                     startActivity(intent);
                     Toast.makeText(getApplicationContext(), "내가 쓴 리뷰", Toast.LENGTH_SHORT).show();
-                }else if(id == R.id.menu_item3){
-                    Intent intent = new Intent(MainActivity.this, SearchActivity.class);
-                    startActivity(intent);
-                    Toast.makeText(getApplicationContext(), "다른 공원 보기", Toast.LENGTH_SHORT).show();
-                    // 메뉴 나누거나 하기 currentLoc 있는 곳부터 가능. SearchActivity에서 get으로 꺼내기 때문에
                 }
 
                 DrawerLayout drawer = findViewById(R.id.drawer_menu);
