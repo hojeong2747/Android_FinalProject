@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" >
+    xmlns:tools="http://schemas.android.com/tools">
     <!-- Location -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- Parsing -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
-    <uses-permission android:name="android.permission.DIAL_PHONE" />
-
-    <!-- Photo -->
+    <uses-permission android:name="android.permission.DIAL_PHONE" /> <!-- Photo -->
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" />
 
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="false"
@@ -27,24 +25,50 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FianlProject"
         android:usesCleartextTraffic="true"
-        tools:targetApi="31" >
+        tools:targetApi="31">
+        <activity
+            android:name=".ReviewDetailActivity"
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".ReviewUpdateActivity"
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".ReviewAddActivity"
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="work2.mobile_finalproject.finalproject.fileprovider"
+            android:authorities="work2.mobile_finalproject.finalprojet.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_path" />
+                android:resource="@xml/file_paths" />
         </provider>
+
         <service
             android:name=".FetchLatLngIntentService"
-            android:exported="false"/>
+            android:exported="false" />
 
         <activity
             android:name=".BookmarkPlaceActivity"
             android:exported="true"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -52,7 +76,7 @@
         <activity
             android:name=".ReviewActivity"
             android:exported="true"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -60,7 +84,7 @@
         <activity
             android:name=".BookmarkActivity"
             android:exported="true"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -68,7 +92,7 @@
         <activity
             android:name=".CurrentActivity"
             android:exported="true"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -76,7 +100,7 @@
         <activity
             android:name=".DetailActivity"
             android:exported="true"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -89,7 +113,7 @@
         <activity
             android:name=".SearchActivity"
             android:exported="true"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -97,7 +121,7 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -105,7 +129,7 @@
         <activity
             android:name=".SplashActivity"
             android:exported="true"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

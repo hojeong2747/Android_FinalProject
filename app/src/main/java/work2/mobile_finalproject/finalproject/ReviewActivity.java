@@ -10,21 +10,108 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 
+import java.util.ArrayList;
+
 public class ReviewActivity extends AppCompatActivity {
+
+    Cursor cursor;
+    PlaceDBHelper helper;
+    PlaceDBManager placeDBManager;
+    ListView lvReview;
+    ReviewAdapter adapter;
+    ArrayList<PlaceDto> arrayList = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_review);
 
+
+//        어댑터에 SimpleCursorAdapter 연결
+        lvReview = (ListView)findViewById(R.id.lvReview);
+        arrayList = new ArrayList();
+
+        helper = new PlaceDBHelper(this);
+        placeDBManager = new PlaceDBManager(this);
+
+//		  SimpleCursorAdapter 객체 생성
+//        adapter = new SimpleCursorAdapter ( /* 매개변수 설정*/ );
+        adapter = new ReviewAdapter(this, R.layout.listview_item2, null);
+
+        lvReview.setAdapter(adapter);
+
+        lvReview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //                ShowMemoActivity 호출
+                Intent intent = new Intent(ReviewActivity.this, ReviewDetailActivity.class);
+                intent.putExtra("Id", id);
+                startActivity(intent);
+            }
+        });
+
+        lvReview.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(ReviewActivity.this);
+                builder.setTitle("삭제 확인")
+                        .setMessage("삭제하시겠습니까?")
+                        .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                if (placeDBManager.removeReview(id)) {
+                                    Toast.makeText(ReviewActivity.this, "삭제 완료", Toast.LENGTH_SHORT).show();
+                                    //onResume에서 하는 기능 (삭제 후 다시 불러오기)
+                                    dataReader();
+                                } else {
+                                    Toast.makeText(ReviewActivity.this, "삭제 실패", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        })
+                        .setNegativeButton("취소", null)
+                        .setCancelable(false)
+                        .show();
+                return true;
+            }
+        });
+
         this.settingSideNavBar();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+//        DB 에서 모든 레코드를 가져와 Adapter에 설정
+        dataReader();
+
+        helper.close();
+    }
+
+    protected void dataReader(){
+        SQLiteDatabase db = helper.getReadableDatabase();
+        cursor = db.rawQuery("select * from " + PlaceDBHelper.TABLE_NAME, null);
+
+        adapter.changeCursor(cursor);
+        helper.close();
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (cursor != null) cursor.close();
     }
 
     // menu

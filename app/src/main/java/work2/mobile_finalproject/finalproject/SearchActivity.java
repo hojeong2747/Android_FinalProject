@@ -130,7 +130,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
                 }
                 break;
             case R.id.btnOK:
-                Toast.makeText(SearchActivity.this, "btnOK 클릭", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SearchActivity.this, "반경 10km 이내 공원 보기", Toast.LENGTH_SHORT).show();
                 searchStartByKeyWord(PlaceType.PARK);
                 break;
         }
@@ -160,7 +160,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         mGoogleMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
             @Override
             public boolean onMyLocationButtonClick() {
-                Toast.makeText(SearchActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SearchActivity.this, "현재 위치", Toast.LENGTH_SHORT).show();
                 return false;
             }
         });

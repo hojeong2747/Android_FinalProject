@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FFFFFFFF"
+    android:id="@+id/drawer_menu"
+    tools:context=".ReviewAddActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ReviewAddActivity">
+
+
+        <ScrollView
+            android:id="@+id/scrollView2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="60dp"
+            android:layout_marginBottom="100dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:layout_editor_absoluteX="-1dp"
+                tools:layout_editor_absoluteY="0dp">
+
+                <TextView
+                    android:id="@+id/tvRVA"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="15dp"
+                    android:text="위치"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvRVName" />
+
+                <TextView
+                    android:id="@+id/tvRVP"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="10dp"
+                    android:text="번호"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvRVA" />
+
+                <TextView
+                    android:id="@+id/tvRVD"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="10dp"
+                    android:text="날짜"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/etRVImage" />
+
+                <EditText
+                    android:id="@+id/etRVDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="5dp"
+                    android:ems="10"
+                    android:hint="YYYYMMDD"
+                    android:inputType="date"
+                    app:layout_constraintStart_toEndOf="@+id/tvRVD"
+                    app:layout_constraintTop_toBottomOf="@+id/etRVImage" />
+
+                <TextView
+                    android:id="@+id/tvRVC"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="10dp"
+                    android:text="내용"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvRVP" />
+
+                <TextView
+                    android:id="@+id/tvRVI"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="10dp"
+                    android:text="사진"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/etRVContents" />
+
+                <TextView
+                    android:id="@+id/tvRVAddress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="15dp"
+                    android:text="Address"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toEndOf="@+id/tvRVA"
+                    app:layout_constraintTop_toBottomOf="@+id/tvRVName" />
+
+                <TextView
+                    android:id="@+id/tvRVPhone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Phone"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toEndOf="@+id/tvRVP"
+                    app:layout_constraintTop_toBottomOf="@+id/tvRVAddress" />
+
+                <EditText
+                    android:id="@+id/etRVContents"
+                    android:layout_width="260dp"
+                    android:layout_height="120dp"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/layout_et"
+                    android:gravity="top"
+                    android:hint="리뷰를 작성하세요."
+                    android:inputType="textMultiLine"
+                    android:padding="10dp"
+                    android:scrollHorizontally="false"
+                    app:layout_constraintStart_toEndOf="@+id/tvRVC"
+                    app:layout_constraintTop_toBottomOf="@+id/tvRVPhone" />
+
+                <TextView
+                    android:id="@+id/tvRVName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="5dp"
+                    android:shadowColor="#000000"
+                    android:text="PlaceName"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                    android:textColor="#000000"
+                    android:textSize="30sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/etRVImage"
+                    android:layout_width="0dp"
+                    android:layout_height="160dp"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/etRVContents"
+                    tools:srcCompat="@mipmap/ic_launcher" />
+
+                <TextView
+                    android:id="@+id/tvRVRating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:text="평점"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/etRVDate" />
+
+                <RatingBar
+                    android:id="@+id/etRVRating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:isIndicator="false"
+                    android:max="5"
+                    android:numStars="5"
+                    android:progressTint="#FFEB3B"
+                    app:layout_constraintStart_toEndOf="@+id/tvRVRating"
+                    app:layout_constraintTop_toTopOf="@+id/tvRVRating" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+
+        <Button
+            android:id="@+id/btnSave"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="15dp"
+            android:backgroundTint="@color/purple_300"
+            android:onClick="onClick"
+            android:text="저장"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/scrollView2" />
+
+        <Button
+            android:id="@+id/btnCancel"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="20dp"
+            android:backgroundTint="@color/purple_300"
+            android:onClick="onClick"
+            android:text="취소"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/scrollView2" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <include
+        layout="@layout/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:fitsSystemWindows="true"
+        app:menu="@menu/drawer_menu" />
+</androidx.drawerlayout.widget.DrawerLayout>

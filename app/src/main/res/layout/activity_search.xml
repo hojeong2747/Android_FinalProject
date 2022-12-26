@@ -70,7 +70,7 @@
         android:layout_marginTop="25dp"
         android:layout_marginEnd="10dp"
         android:ems="10"
-        android:hint="공원명을 입력해주세요."
+        android:hint="공원명을 검색해보세요."
         android:inputType="textPersonName"
         app:layout_constraintEnd_toStartOf="@+id/btnSearch"
         app:layout_constraintStart_toStartOf="parent"

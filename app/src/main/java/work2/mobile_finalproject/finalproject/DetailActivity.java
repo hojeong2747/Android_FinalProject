@@ -52,7 +52,8 @@ public class DetailActivity extends AppCompatActivity {
     private PlacesClient placesClient;
     private PlaceDBManager placeDBManager;
     private PlaceDto placeDto;
-
+    String name;
+    String address;
     String phone;
 
     @Override
@@ -74,11 +75,11 @@ public class DetailActivity extends AppCompatActivity {
         placeDto = new PlaceDto();
 
         Intent intent = getIntent();
-        String name = intent.getStringExtra("name");
+        name = intent.getStringExtra("name");
         tvName.setText(name);
         placeDto.setName(name);
 
-        String address = intent.getStringExtra("address");
+        address = intent.getStringExtra("address");
         tvAddress.setText(address);
         placeDto.setAddress(address);
 
@@ -208,9 +209,13 @@ public class DetailActivity extends AppCompatActivity {
                         .show();
             case R.id.btnReview:
                 // 리뷰 작성
-
+                Intent intent = new Intent(DetailActivity.this, ReviewAddActivity.class);
+                intent.putExtra("name", name);
+                intent.putExtra("address", address);
+                intent.putExtra("phone", phone);
+                startActivity(intent);
                 break;
-            case R.id.btnBefore:
+            case R.id.btnSave:
                 finish();
                 break;
         }
