@@ -35,8 +35,8 @@ public class BookmarkAdapter extends CursorAdapter {
 
         // viewHolder 에 view 들을 담아놓는다. findViewById 호출 횟수 줄이기 위함
         viewHolder.tvBMName = view.findViewById(R.id.tvBMName);
-        viewHolder.tvBMPhone = view.findViewById(R.id.tvBMAdress);
-        viewHolder.tvBMAddress = view.findViewById(R.id.tvBMPhone);
+        viewHolder.tvBMPhone = view.findViewById(R.id.tvBMPhone);
+        viewHolder.tvBMAddress = view.findViewById(R.id.tvBMAddress);
 
         // viewHolder 에 담은 view 값 설정
         viewHolder.tvBMName.setText(cursor.getString(cursor.getColumnIndex(BookmarkDBHelper.COL_NAME)));

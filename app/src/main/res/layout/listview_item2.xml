@@ -31,12 +31,12 @@
         android:id="@+id/tvRVDateItem"
         android:layout_width="64dp"
         android:layout_height="18dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="8dp"
-        android:text="날짜"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="25dp"
         android:fontFamily="@font/gowunbatang_regular"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvRVNameItem" />
+        android:text="날짜"
+        app:layout_constraintStart_toEndOf="@+id/tvRVNameItem"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/ivRV"
