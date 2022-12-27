@@ -42,6 +42,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="15dp"
                     android:text="위치"
+                    android:fontFamily="@font/gowunbatang_regular"
                     android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tvRVName" />
@@ -53,6 +54,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="10dp"
                     android:text="번호"
+                    android:fontFamily="@font/gowunbatang_regular"
                     android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tvRVA" />
@@ -64,6 +66,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="10dp"
                     android:text="날짜"
+                    android:fontFamily="@font/gowunbatang_regular"
                     android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/etRVImage" />
@@ -76,6 +79,7 @@
                     android:layout_marginTop="5dp"
                     android:ems="10"
                     android:hint="YYYYMMDD"
+                    android:fontFamily="@font/gowunbatang_regular"
                     android:inputType="date"
                     app:layout_constraintStart_toEndOf="@+id/tvRVD"
                     app:layout_constraintTop_toBottomOf="@+id/etRVImage" />
@@ -87,6 +91,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="10dp"
                     android:text="내용"
+                    android:fontFamily="@font/gowunbatang_regular"
                     android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tvRVP" />
@@ -98,6 +103,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="10dp"
                     android:text="사진"
+                    android:fontFamily="@font/gowunbatang_regular"
                     android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/etRVContents" />
@@ -109,6 +115,7 @@
                     android:layout_marginStart="12dp"
                     android:layout_marginTop="15dp"
                     android:text="Address"
+                    android:fontFamily="@font/gowunbatang_regular"
                     android:textColor="#000000"
                     android:textSize="16sp"
                     app:layout_constraintStart_toEndOf="@+id/tvRVA"
@@ -121,6 +128,7 @@
                     android:layout_marginStart="12dp"
                     android:layout_marginTop="10dp"
                     android:text="Phone"
+                    android:fontFamily="@font/gowunbatang_regular"
                     android:textColor="#000000"
                     android:textSize="16sp"
                     app:layout_constraintStart_toEndOf="@+id/tvRVP"
@@ -135,6 +143,7 @@
                     android:background="@drawable/layout_et"
                     android:gravity="top"
                     android:hint="리뷰를 작성하세요."
+                    android:fontFamily="@font/gowunbatang_regular"
                     android:inputType="textMultiLine"
                     android:padding="10dp"
                     android:scrollHorizontally="false"
@@ -149,6 +158,7 @@
                     android:layout_marginTop="5dp"
                     android:shadowColor="#000000"
                     android:text="PlaceName"
+                    android:fontFamily="@font/gowunbatang_bold"
                     android:textAppearance="@style/TextAppearance.AppCompat.Display1"
                     android:textColor="#000000"
                     android:textSize="30sp"
@@ -172,6 +182,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:text="평점"
+                    android:fontFamily="@font/gowunbatang_regular"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/etRVDate" />
 
@@ -185,7 +196,8 @@
                     android:numStars="5"
                     android:progressTint="#FFEB3B"
                     app:layout_constraintStart_toEndOf="@+id/tvRVRating"
-                    app:layout_constraintTop_toTopOf="@+id/tvRVRating" />
+                    app:layout_constraintTop_toTopOf="@+id/tvRVRating"
+                    tools:ignore="SpeakableTextPresentCheck" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -200,6 +212,7 @@
             android:backgroundTint="@color/purple_300"
             android:onClick="onClick"
             android:text="저장"
+            android:fontFamily="@font/gowunbatang_regular"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -214,6 +227,7 @@
             android:backgroundTint="@color/purple_300"
             android:onClick="onClick"
             android:text="취소"
+            android:fontFamily="@font/gowunbatang_regular"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"

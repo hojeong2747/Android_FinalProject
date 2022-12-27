@@ -92,21 +92,21 @@ public class CurrentActivity extends AppCompatActivity {
             }
             mGoogleMap.setMyLocationEnabled(true); // 내 위치 버튼 활성화
 
-            // 지도 위치 이동하기 - 1. 특정 위치로 이동하기
-            LatLng latLng = new LatLng(37.604094, 127.042463);
-            mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17));
-
-            // 지도 특정 위치에 마커 추가 - 지도 준비되고 마커 추가해야 하므로 onMapReady 에 작성
-            // 마커 옵션 설정
-            markerOptions = new MarkerOptions()
-                    .position(latLng)
-                    .title("처음 위치")
-                    .snippet("초기값")
-                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
-
-            // 지도에 마커 추가 - 반환 값은 Marker (제거, 이동 등 제어 가능)
-            initMarker = mGoogleMap.addMarker(markerOptions);
-            initMarker.showInfoWindow();
+//            // 지도 위치 이동하기 - 1. 특정 위치로 이동하기
+//            LatLng latLng = new LatLng(37.604094, 127.042463);
+//            mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17));
+//
+//            // 지도 특정 위치에 마커 추가 - 지도 준비되고 마커 추가해야 하므로 onMapReady 에 작성
+//            // 마커 옵션 설정
+//            markerOptions = new MarkerOptions()
+//                    .position(latLng)
+//                    .title("처음 위치")
+//                    .snippet("초기값")
+//                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+//
+//            // 지도에 마커 추가 - 반환 값은 Marker (제거, 이동 등 제어 가능)
+//            initMarker = mGoogleMap.addMarker(markerOptions);
+//            initMarker.showInfoWindow();
 
 
             // 지도 롱클릭 이벤트 처리

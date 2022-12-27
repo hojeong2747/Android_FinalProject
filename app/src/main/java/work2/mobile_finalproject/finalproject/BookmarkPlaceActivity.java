@@ -349,7 +349,7 @@ public class BookmarkPlaceActivity extends AppCompatActivity implements OnMapRea
                     uri = Uri.fromFile(photoFile);
                 } else {
                     uri = FileProvider.getUriForFile(BookmarkPlaceActivity.this,
-                            "work2.mobile_finalproject.finalproject.fileprovider",
+                            "work2.mobile_finalproject.finalprojet.fileprovider",
                             photoFile);
                 }
 

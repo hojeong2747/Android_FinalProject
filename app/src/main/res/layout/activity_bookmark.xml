@@ -21,6 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="80dp"
             android:text="즐겨찾기 목록입니다."
+            android:fontFamily="@font/gowunbatang_bold"
             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
