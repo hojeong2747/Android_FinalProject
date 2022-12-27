@@ -33,20 +33,19 @@ public class FetchPlaceGeocoding extends IntentService  {
     protected void onHandleIntent(@Nullable Intent intent) {
         //        Geocoder 생성
         geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
-//        MainActivity 가 전달한 Intent 로부터 주소와 Receiver 객체 설정
+
         if (intent == null) return;
         String location = intent.getStringExtra(Constants.ADDRESS_DATA_EXTRA);
         receiver = intent.getParcelableExtra(Constants.RECEIVER);
         List<Address> addresses = null;
-//        주소에 해당하는 위도/경도 정보를 Geocoder 에게 요청
         try {
-            addresses = geocoder.getFromLocationName(location, 1);
+            addresses = geocoder.getFromLocationName(location, 1); // 실 주소로 Geocoding
         } catch (IOException e) { // Catch network or other I/O problems.
             e.printStackTrace();
         } catch (IllegalArgumentException e) { // Catch invalid address values.
             e.printStackTrace();
         }
-//        결과로부터 위도/경도 추출
+
         if (addresses == null || addresses.size()  == 0) {
             Log.e(TAG, "not found");
             deliverResultToReceiver(Constants.FAILURE_RESULT, null);
@@ -61,7 +60,7 @@ public class FetchPlaceGeocoding extends IntentService  {
             deliverResultToReceiver(Constants.SUCCESS_RESULT, addressFragments);
         }
     }
-    //    ResultReceiver 에게 결과를 Bundle 형태로 전달
+
     private void deliverResultToReceiver(int resultCode, ArrayList<LatLng> message) {
         Bundle bundle = new Bundle();
         bundle.putSerializable(Constants.RESULT_DATA_KEY, message);

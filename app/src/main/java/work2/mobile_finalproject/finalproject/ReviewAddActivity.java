@@ -80,7 +80,7 @@ public class ReviewAddActivity extends AppCompatActivity {
         etContent = findViewById(R.id.etRVContents);
         etRating = findViewById(R.id.etRVRating);
 
-        // DetailActivity 에서 넘어온 정보 setting
+        // DetailActivity 에서 보낸 정보로 화면 구성
         Intent intent = getIntent();
         name = intent.getStringExtra("name");
         tvName.setText(name);
@@ -105,7 +105,7 @@ public class ReviewAddActivity extends AppCompatActivity {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-//                    외부 카메라 호출
+
                     Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     if(takePictureIntent.resolveActivity(getPackageManager()) != null){
                         File photoFile = null;
@@ -136,10 +136,9 @@ public class ReviewAddActivity extends AppCompatActivity {
             }
         });
 
-        this.settingSideNavBar();
+        this.addDrawerMenu();
     }
 
-    /*현재 시간 정보를 사용하여 파일 정보 생성*/
     private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -162,7 +161,6 @@ public class ReviewAddActivity extends AppCompatActivity {
             setPic();
         }
     }
-    /*사진의 크기를 ImageView에서 표시할 수 있는 크기로 변경*/
     private void setPic() {
         // Get the dimensions of the View
         int targetW = etPhoto.getWidth();
@@ -181,7 +179,6 @@ public class ReviewAddActivity extends AppCompatActivity {
         // Decode the image file into a Bitmap sized to fill the View
         bmOptions.inJustDecodeBounds = false;
         bmOptions.inSampleSize = scaleFactor;
-//        bmOptions.inPurgeable = true;
 
         Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
         etPhoto.setImageBitmap(bitmap);
@@ -190,7 +187,6 @@ public class ReviewAddActivity extends AppCompatActivity {
     public void onClick(View v) {
         switch(v.getId()) {
             case R.id.btnAddSave:
-//                DB에 촬영한 사진의 파일 경로 및 메모 저장
                 String date = etDate.getText().toString();
                 String content = etContent.getText().toString();
 
@@ -226,7 +222,7 @@ public class ReviewAddActivity extends AppCompatActivity {
                 reviewDto.setRating(ratingNum);
 
                 reviewDBManager = new PlaceDBManager(this);
-                boolean result = reviewDBManager.addNewReview(reviewDto);
+                boolean result = reviewDBManager.addReview(reviewDto);
                 if(result) {
                     // 알림 생성
                     NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "MY_CHANNEL")
@@ -314,9 +310,9 @@ public class ReviewAddActivity extends AppCompatActivity {
                         .setPositiveButton("종료", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                moveTaskToBack(true); // 태스크를 백그라운드로 이동
-                                finishAndRemoveTask(); // 액티비티 종료 + 태스크 리스트에서 지우기
-                                android.os.Process.killProcess(android.os.Process.myPid()); // 앱 프로세스 종료
+                                moveTaskToBack(true);
+                                finishAndRemoveTask();
+                                android.os.Process.killProcess(android.os.Process.myPid());
                             }
                         })
                         .setNegativeButton("취소", null)
@@ -327,7 +323,7 @@ public class ReviewAddActivity extends AppCompatActivity {
         return true;
     }
 
-    public void settingSideNavBar() {
+    public void addDrawerMenu() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 

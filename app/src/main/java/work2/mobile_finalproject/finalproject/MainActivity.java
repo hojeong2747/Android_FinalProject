@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        this.settingSideNavBar();
+        this.addDrawerMenu();
     }
 
     public void onClick(View v) {
@@ -57,9 +57,9 @@ public class MainActivity extends AppCompatActivity {
                         .setPositiveButton("종료", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                moveTaskToBack(true); // 태스크를 백그라운드로 이동
-                                finishAndRemoveTask(); // 액티비티 종료 + 태스크 리스트에서 지우기
-                                android.os.Process.killProcess(android.os.Process.myPid()); // 앱 프로세스 종료
+                                moveTaskToBack(true);
+                                finishAndRemoveTask();
+                                android.os.Process.killProcess(android.os.Process.myPid());
                             }
                         })
                         .setNegativeButton("취소", null)
@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    public void settingSideNavBar() {
+    public void addDrawerMenu() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 

@@ -38,24 +38,16 @@ public class ReviewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_review);
 
-
-//        어댑터에 SimpleCursorAdapter 연결
         lvReview = (ListView)findViewById(R.id.lvReview);
         arrayList = new ArrayList();
-
         helper = new PlaceDBHelper(this);
         placeDBManager = new PlaceDBManager(this);
 
-//		  SimpleCursorAdapter 객체 생성
-//        adapter = new SimpleCursorAdapter ( /* 매개변수 설정*/ );
         adapter = new ReviewAdapter(this, R.layout.listview_item2, null);
-
         lvReview.setAdapter(adapter);
-
         lvReview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //                ShowMemoActivity 호출
                 Intent intent = new Intent(ReviewActivity.this, ReviewDetailActivity.class);
                 intent.putExtra("id", id);
                 startActivity(intent);
@@ -71,10 +63,9 @@ public class ReviewActivity extends AppCompatActivity {
                         .setPositiveButton("확인", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                if (placeDBManager.removeReview(id)) {
+                                if (placeDBManager.deleteReview(id)) {
                                     Toast.makeText(ReviewActivity.this, "삭제 완료", Toast.LENGTH_SHORT).show();
-                                    //onResume에서 하는 기능 (삭제 후 다시 불러오기)
-                                    dataReader();
+                                    getReviewList();
                                 } else {
                                     Toast.makeText(ReviewActivity.this, "삭제 실패", Toast.LENGTH_SHORT).show();
                                 }
@@ -87,19 +78,19 @@ public class ReviewActivity extends AppCompatActivity {
             }
         });
 
-        this.settingSideNavBar();
+        this.addDrawerMenu();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 //        DB 에서 모든 레코드를 가져와 Adapter에 설정
-        dataReader();
+        getReviewList();
 
         helper.close();
     }
 
-    protected void dataReader(){
+    protected void getReviewList(){
         SQLiteDatabase db = helper.getReadableDatabase();
         cursor = db.rawQuery("select * from " + PlaceDBHelper.TABLE_NAME, null);
 
@@ -134,9 +125,9 @@ public class ReviewActivity extends AppCompatActivity {
                         .setPositiveButton("종료", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                moveTaskToBack(true); // 태스크를 백그라운드로 이동
-                                finishAndRemoveTask(); // 액티비티 종료 + 태스크 리스트에서 지우기
-                                android.os.Process.killProcess(android.os.Process.myPid()); // 앱 프로세스 종료
+                                moveTaskToBack(true);
+                                finishAndRemoveTask();
+                                android.os.Process.killProcess(android.os.Process.myPid());
                             }
                         })
                         .setNegativeButton("취소", null)
@@ -147,7 +138,7 @@ public class ReviewActivity extends AppCompatActivity {
         return true;
     }
 
-    public void settingSideNavBar() {
+    public void addDrawerMenu() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 

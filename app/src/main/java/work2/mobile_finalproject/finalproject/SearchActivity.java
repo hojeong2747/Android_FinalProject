@@ -64,19 +64,15 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
     final static String TAG = "SearchActivity";
     final static int PERMISSION_REQ_CODE = 100;
 
-    //    Map & Place
-    private GoogleMap mGoogleMap;       // 지도를 저장할 멤버변수 GoogleMap 객체
-    private Marker initMarker;         // 초기 설정 Marker
-    private Marker curMarker;           // 현재 위치 Marker
+    private GoogleMap mGoogleMap;
 
     private MarkerOptions markerOptions;
-    private Map<String, Marker> markerMap;
+    private Map<String, Marker> markerMap; // 초기 마커들
     private ArrayList<String> placeList;
     private Map<String, Marker> markerMap2;
-    private ArrayList<String> placeList2;
+    private ArrayList<String> placeList2; // 반경 10km 이내 마커들
     private ArrayList<Marker> markersArray;
 
-    //      Data
     private PlacesClient placesClient;
     LatLng currentLoc;
 
@@ -105,7 +101,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
 
         searchStart(PlaceType.PARK);
 
-        this.settingSideNavBar();
+        this.addDrawerMenu();
 
     }
 
@@ -150,9 +146,8 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
-        mGoogleMap.setMyLocationEnabled(true); // 내 위치 버튼 활성화
+        mGoogleMap.setMyLocationEnabled(true);
 
-        // 지도 특정 위치에 마커 추가 - 지도 준비되고 마커 추가해야 하므로 onMapReady 에 작성
         markerOptions = new MarkerOptions();
 
         mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLoc, 15));
@@ -181,8 +176,6 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         });
     }
 
-
-    /*구글맵을 멤버변수로 로딩*/
     private void mapLoad() {
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
@@ -190,7 +183,6 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
 
     }
 
-    /* 필요 permission 요청 */
     private boolean checkPermission() {
         if (Build.VERSION.SDK_INT>= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
@@ -212,11 +204,9 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         if (requestCode ==PERMISSION_REQ_CODE) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED
                     && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-                // 퍼미션을 획득하였을 경우 맵 로딩 실행
                 mapLoad();
             } else {
-                // 퍼미션 미획득 시 액티비티 종료
-                Toast.makeText(this, "앱 실행을 위해 권한 허용이 필요함", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "권한 없음", Toast.LENGTH_SHORT).show();
                 finish();
             }
         }
@@ -227,14 +217,15 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         new NRPlaces.Builder().listener(placesListener)
                 .key(getResources().getString(R.string.api_key))
                 .latlng(currentLoc.latitude, currentLoc.longitude)
-                .radius(10000) // 현재 위치 반경 10km 중 검색 // 개수 제한이 있나 왜 안되지
+                .radius(10000)
                 .type(type)
                 .build()
                 .execute();
     }
 
+    // 키워드 추가해서 검색
     private void searchStartByKeyWord(String type) {
-        // 지도 마커 비우고 다시 찍고 싶은데
+        // 지도 마커 비우고 다시 찍기
         for(int i = 0; i < markersArray.size(); i++){
             markersArray.get(i).remove();
         }
@@ -242,7 +233,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         new NRPlaces.Builder().listener(placesListener2)
                 .key(getResources().getString(R.string.api_key))
                 .latlng(currentLoc.latitude, currentLoc.longitude)
-                .radius(10000) // 현재 위치 반경 10km 중 검색 // 개수 제한이 있나 왜 안되지
+                .radius(10000) // 현재 위치 반경 10km 중 검색
                 .type(type)
                 .keyword("공원")
                 .build()
@@ -278,7 +269,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         @Override
         public void onPlacesFinished() {
             if(count == 0 )
-                Toast.makeText(SearchActivity.this, "주변에 해당 장소가 없습니다!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SearchActivity.this, "인근 공원이 없습니다.", Toast.LENGTH_SHORT).show();
         }
     };
 
@@ -286,7 +277,6 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         int count = 0;
         @Override
         public void onPlacesSuccess(final List<noman.googleplaces.Place> places) {
-            //마커 추가
             runOnUiThread(() -> {
                 mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLoc, 12));
                 for(Place place : places){
@@ -313,11 +303,11 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         @Override
         public void onPlacesFinished() {
             if(count == 0 )
-                Toast.makeText(SearchActivity.this, "주변에 해당 장소가 없습니다!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SearchActivity.this, "인근 공원이 없습니다.", Toast.LENGTH_SHORT).show();
         }
     };
 
-    // newMarker Tag 에 저장해둔 placeId로 장소에 대한 세부정보 획득
+    // newMarker Tag 에 저장해둔 placeId로 장소에 대한 세부정보 획득 (Field 파일 확인 - 생각보다 정보가 없음)
     private void getPlaceDetail(String placeId) {
         List<com.google.android.libraries.places.api.model.Place.Field> placeFields = Arrays.asList(
                 com.google.android.libraries.places.api.model.Place.Field.ID,
@@ -341,7 +331,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
                 if(e instanceof ApiException){
                     ApiException apiException = (ApiException) e;
                     int statusCode = apiException.getStatusCode();
-                    Log.e(TAG, "Place not found: " + statusCode + " " + e.getMessage());
+                    Log.e(TAG, "not found " + statusCode + " " + e.getMessage());
                 }
             }
         });
@@ -349,7 +339,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
 
     private void callDetailActivity (com.google.android.libraries.places.api.model.Place place) {
         Intent intent = new Intent(SearchActivity.this, DetailActivity.class);
-        intent.putExtra("id", place.getId()); // 사진 가져올 때 필요함
+        intent.putExtra("id", place.getId());
         intent.putExtra("name",place.getName());
         intent.putExtra("address",place.getAddress());
         intent.putExtra("uri", place.getWebsiteUri());
@@ -361,7 +351,6 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
             intent.putExtra("rating", "no rating info");
         }
 
-        // 어떤 위치 보내는지 확인하기
         intent.putExtra("currentLoc", currentLoc);
         intent.putExtra("keyword", "공원");
 
@@ -388,9 +377,9 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
                         .setPositiveButton("종료", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                moveTaskToBack(true); // 태스크를 백그라운드로 이동
-                                finishAndRemoveTask(); // 액티비티 종료 + 태스크 리스트에서 지우기
-                                android.os.Process.killProcess(android.os.Process.myPid()); // 앱 프로세스 종료
+                                moveTaskToBack(true);
+                                finishAndRemoveTask();
+                                android.os.Process.killProcess(android.os.Process.myPid());
                             }
                         })
                         .setNegativeButton("취소", null)
@@ -401,7 +390,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         return true;
     }
 
-    public void settingSideNavBar() {
+    public void addDrawerMenu() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 

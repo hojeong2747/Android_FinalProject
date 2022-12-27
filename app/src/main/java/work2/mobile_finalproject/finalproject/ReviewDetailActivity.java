@@ -56,7 +56,6 @@ public class ReviewDetailActivity extends AppCompatActivity {
         tvContent = (findViewById(R.id.tvRVDContents));
         ratingbar = findViewById(R.id.etRVDRating);
 
-//      ReviewActivity 에서 전달 받은 _id 값을 사용하여 DB 레코드를 가져온 후 ImageView 와 TextView 설정
         Intent intent = getIntent();
         data = intent.getLongExtra("id", 0);
         showDBHelper = new PlaceDBHelper(this);
@@ -115,7 +114,7 @@ public class ReviewDetailActivity extends AppCompatActivity {
 
         cursor.close();
 
-        this.settingSideNavBar();
+        this.addDrawerMenu();
     }
 
     public void onClick(View v) {
@@ -131,8 +130,6 @@ public class ReviewDetailActivity extends AppCompatActivity {
         }
     }
 
-
-    /*사진의 크기를 ImageView에서 표시할 수 있는 크기로 변경*/
     private void setPic() {
         // Get the dimensions of the View
         int targetW = 1080;
@@ -151,7 +148,6 @@ public class ReviewDetailActivity extends AppCompatActivity {
         // Decode the image file into a Bitmap sized to fill the View
         bmOptions.inJustDecodeBounds = false;
         bmOptions.inSampleSize = scaleFactor;
-//        bmOptions.inPurgeable = true;
 
         Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
         ivPhoto.setImageBitmap(bitmap);
@@ -177,9 +173,9 @@ public class ReviewDetailActivity extends AppCompatActivity {
                         .setPositiveButton("종료", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                moveTaskToBack(true); // 태스크를 백그라운드로 이동
-                                finishAndRemoveTask(); // 액티비티 종료 + 태스크 리스트에서 지우기
-                                android.os.Process.killProcess(android.os.Process.myPid()); // 앱 프로세스 종료
+                                moveTaskToBack(true);
+                                finishAndRemoveTask();
+                                android.os.Process.killProcess(android.os.Process.myPid());
                             }
                         })
                         .setNegativeButton("취소", null)
@@ -190,7 +186,7 @@ public class ReviewDetailActivity extends AppCompatActivity {
         return true;
     }
 
-    public void settingSideNavBar() {
+    public void addDrawerMenu() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 

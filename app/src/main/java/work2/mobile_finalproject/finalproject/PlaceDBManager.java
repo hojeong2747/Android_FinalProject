@@ -16,8 +16,7 @@ public class PlaceDBManager {
         bookmarkDBHelper = new BookmarkDBHelper(context);
     }
 
-    //    DB 에 새로운 store 추가
-    public boolean addNewReview(PlaceDto newPlace) {
+    public boolean addReview(PlaceDto newPlace) {
         SQLiteDatabase db = placeDBHelper.getWritableDatabase();
         ContentValues value = new ContentValues();
         value.put(PlaceDBHelper.COL_NAME, newPlace.getName());
@@ -28,14 +27,13 @@ public class PlaceDBManager {
         value.put(PlaceDBHelper.COL_CONTENT, newPlace.getContent());
         value.put(PlaceDBHelper.COL_RATING, newPlace.getRating());
 
-//      insert 메소드를 사용할 경우 데이터 삽입이 정상적으로 이루어질 경우 1 이상, 이상이 있을 경우 0 반환 확인 가능
         long count = db.insert(PlaceDBHelper.TABLE_NAME, null, value);
         placeDBHelper.close();
         if (count > 0) return true;
         return false;
     }
 
-    public boolean addNewBookmark(PlaceDto newPlace) {
+    public boolean addBookmark(PlaceDto newPlace) {
         SQLiteDatabase db = bookmarkDBHelper.getWritableDatabase();
         ContentValues value = new ContentValues();
         value.put(BookmarkDBHelper.COL_NAME, newPlace.getName());
@@ -46,16 +44,14 @@ public class PlaceDBManager {
         value.put(BookmarkDBHelper.COL_LNG, newPlace.getLng());
         value.put(BookmarkDBHelper.COL_KEYWORD, newPlace.getKeyWord());
 
-//      insert 메소드를 사용할 경우 데이터 삽입이 정상적으로 이루어질 경우 1 이상, 이상이 있을 경우 0 반환 확인 가능
         long count = db.insert(BookmarkDBHelper.TABLE_NAME, null, value);
         bookmarkDBHelper.close();
         if (count > 0) return true;
         return false;
     }
 
-    //    _id 를 기준으로 review의 정보 변경
-    public boolean modifyReview(PlaceDto review) {
-        SQLiteDatabase sqLiteDatabase = placeDBHelper.getWritableDatabase();
+    public boolean updateReview(PlaceDto review) {
+        SQLiteDatabase db = placeDBHelper.getWritableDatabase();
         ContentValues row = new ContentValues();
 
         row.put(PlaceDBHelper.COL_DATE, review.getDate());
@@ -66,39 +62,35 @@ public class PlaceDBManager {
         String whereClause = PlaceDBHelper.COL_ID + "=?";
         String[] whereArgs = new String[] { String.valueOf(review.getId()) };
 
-        int result = sqLiteDatabase.update(PlaceDBHelper.TABLE_NAME, row, whereClause, whereArgs);
+        int result = db.update(PlaceDBHelper.TABLE_NAME, row, whereClause, whereArgs);
         placeDBHelper.close();
 
         if (result > 0) return true;
         return false;
     }
-    //
-    //    _id 를 기준으로 DB에서 Bookmark삭제
-    public boolean removeBookmark(long id) {
-        SQLiteDatabase sqLiteDatabase = bookmarkDBHelper.getWritableDatabase();
+
+    public boolean deleteBookmark(long id) {
+        SQLiteDatabase db = bookmarkDBHelper.getWritableDatabase();
         String whereClause = BookmarkDBHelper.COL_ID + "=?";
         String[] whereArgs = new String[] { String.valueOf(id) };
-        int result = sqLiteDatabase.delete(BookmarkDBHelper.TABLE_NAME, whereClause,whereArgs);
+        int result = db.delete(BookmarkDBHelper.TABLE_NAME, whereClause,whereArgs);
         bookmarkDBHelper.close();
 
         if (result > 0) return true;
         return false;
     }
 
-    //    _id 를 기준으로 DB에서 Bookmark삭제
-    public boolean removeReview(long id) {
-        SQLiteDatabase sqLiteDatabase = placeDBHelper.getWritableDatabase();
+    public boolean deleteReview(long id) {
+        SQLiteDatabase db = placeDBHelper.getWritableDatabase();
         String whereClause = PlaceDBHelper.COL_ID + "=?";
         String[] whereArgs = new String[] { String.valueOf(id) };
-        int result = sqLiteDatabase.delete(PlaceDBHelper.TABLE_NAME, whereClause,whereArgs);
+        int result = db.delete(PlaceDBHelper.TABLE_NAME, whereClause,whereArgs);
         placeDBHelper.close();
 
         if (result > 0) return true;
         return false;
     }
 
-
-    //    close 수행
     public void close() {
         if (placeDBHelper != null) placeDBHelper.close();
         if (bookmarkDBHelper != null) bookmarkDBHelper.close();

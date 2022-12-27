@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class BookmarkDBHelper extends SQLiteOpenHelper {
+
     private final static String DB_NAME = "bookmark_db";
     public final static String TABLE_NAME = "bookmark_db_table";
     public final static String COL_ID = "_id";
@@ -20,7 +21,6 @@ public class BookmarkDBHelper extends SQLiteOpenHelper {
         super(context, DB_NAME, null, 1);
     }
 
-
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL("create table " + TABLE_NAME + " ( " + COL_ID + " integer primary key autoincrement,"
@@ -28,7 +28,6 @@ public class BookmarkDBHelper extends SQLiteOpenHelper {
                 + COL_LNG + " TEXT," + COL_KEYWORD + " TEXT);");
 
     }
-
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         sqLiteDatabase.execSQL("drop table " + TABLE_NAME);

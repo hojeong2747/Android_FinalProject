@@ -7,13 +7,13 @@ import android.database.sqlite.SQLiteOpenHelper;
 import androidx.annotation.Nullable;
 
 public class PlaceDBHelper extends SQLiteOpenHelper {
+
     private final static String DB_NAME = "review_db";
     public final static String TABLE_NAME = "review_table";
     public final static String COL_ID = "_id";
     public final static String COL_NAME = "name";
     public final static String COL_PHONE = "phone";
     public final static String COL_ADDRESS = "address";
-    public final static String COL_URI = "uri";
     public final static String COL_DATE = "date";
     public final static String COL_PHOTOPATH = "photoPath";
     public final static String COL_CONTENT = "content";
@@ -22,7 +22,6 @@ public class PlaceDBHelper extends SQLiteOpenHelper {
     public PlaceDBHelper(Context context) {
         super(context, DB_NAME, null, 1);
     }
-
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {

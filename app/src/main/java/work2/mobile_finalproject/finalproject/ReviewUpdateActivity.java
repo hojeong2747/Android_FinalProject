@@ -73,16 +73,15 @@ public class ReviewUpdateActivity extends AppCompatActivity {
         etContent = findViewById(R.id.etRVUContents);
         ratingbar = findViewById(R.id.etRVURating);
 
-//      ShowReviewActivity 에서 전달 받은 _id 값을 사용하여 DB 레코드를 가져온 후 ImageView 와 TextView 설정
         Intent intent = getIntent();
         id = intent.getLongExtra("id", 0);
         updateDBHelper = new PlaceDBHelper(this);
-        SQLiteDatabase myDB = updateDBHelper.getWritableDatabase();
+        SQLiteDatabase db = updateDBHelper.getWritableDatabase();
 
         String selection = PlaceDBHelper.COL_ID + "=?";
         String[] selectArgs = new String[]{String.valueOf(id)};
 
-        Cursor cursor = myDB.query(PlaceDBHelper.TABLE_NAME, null, selection, selectArgs,
+        Cursor cursor = db.query(PlaceDBHelper.TABLE_NAME, null, selection, selectArgs,
                 null,null,null,null);
 
         String name = "";
@@ -129,7 +128,7 @@ public class ReviewUpdateActivity extends AppCompatActivity {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-//                    외부 카메라 호출
+
                     Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     if(takePictureIntent.resolveActivity(getPackageManager()) != null){
                         File photoFile = null;
@@ -160,10 +159,9 @@ public class ReviewUpdateActivity extends AppCompatActivity {
             }
         });
 
-        this.settingSideNavBar();
+        this.addDrawerMenu();
     }
 
-    /*현재 시간 정보를 사용하여 파일 정보 생성*/
     private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -215,11 +213,11 @@ public class ReviewUpdateActivity extends AppCompatActivity {
                 updateDto.setRating(ratingNum);
 
                 updateDBManager = new PlaceDBManager(this);
-                boolean result = updateDBManager.modifyReview(updateDto);
+                boolean result = updateDBManager.updateReview(updateDto);
                 if(result)
-                    Toast.makeText(this, "REVIEW 수정!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "리뷰 수정 성공", Toast.LENGTH_SHORT).show();
                 else
-                    Toast.makeText(this, "REVIEW 수정 실패", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "리뷰 수정 실패", Toast.LENGTH_SHORT).show();
 
                 updateDBHelper.close();
                 Intent intent = new Intent(this, ReviewActivity.class);
@@ -235,8 +233,6 @@ public class ReviewUpdateActivity extends AppCompatActivity {
         }
     }
 
-
-    /*사진의 크기를 ImageView에서 표시할 수 있는 크기로 변경*/
     private void setPic() {
         // Get the dimensions of the View
         int targetW = 720;
@@ -255,7 +251,6 @@ public class ReviewUpdateActivity extends AppCompatActivity {
         // Decode the image file into a Bitmap sized to fill the View
         bmOptions.inJustDecodeBounds = false;
         bmOptions.inSampleSize = scaleFactor;
-//        bmOptions.inPurgeable = true;
 
         Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
         ivPhoto.setImageBitmap(bitmap);
@@ -281,9 +276,9 @@ public class ReviewUpdateActivity extends AppCompatActivity {
                         .setPositiveButton("종료", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                moveTaskToBack(true); // 태스크를 백그라운드로 이동
-                                finishAndRemoveTask(); // 액티비티 종료 + 태스크 리스트에서 지우기
-                                android.os.Process.killProcess(android.os.Process.myPid()); // 앱 프로세스 종료
+                                moveTaskToBack(true);
+                                finishAndRemoveTask();
+                                android.os.Process.killProcess(android.os.Process.myPid());
                             }
                         })
                         .setNegativeButton("취소", null)
@@ -294,7 +289,7 @@ public class ReviewUpdateActivity extends AppCompatActivity {
         return true;
     }
 
-    public void settingSideNavBar() {
+    public void addDrawerMenu() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 

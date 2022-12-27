@@ -63,7 +63,7 @@ public class ReviewAdapter extends CursorAdapter {
             setPic(photoPath);
 
     }
-    /*사진의 크기를 ImageView에서 표시할 수 있는 크기로 변경*/
+
     private void setPic(String path) {
         // Get the dimensions of the View
         int targetW = 1080;
@@ -82,7 +82,6 @@ public class ReviewAdapter extends CursorAdapter {
         // Decode the image file into a Bitmap sized to fill the View
         bmOptions.inJustDecodeBounds = false;
         bmOptions.inSampleSize = scaleFactor;
-//        bmOptions.inPurgeable = true;
 
         Bitmap bitmap = BitmapFactory.decodeFile(path, bmOptions);
         holder.imageView.setImageBitmap(bitmap);
@@ -94,7 +93,6 @@ public class ReviewAdapter extends CursorAdapter {
             tvDate = null;
             Ratingbar = null;
             imageView = null;
-
         }
 
         TextView tvName;

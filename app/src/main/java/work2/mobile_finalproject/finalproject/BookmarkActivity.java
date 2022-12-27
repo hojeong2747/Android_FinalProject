@@ -51,12 +51,12 @@ public class BookmarkActivity extends AppCompatActivity {
             @SuppressLint("Range")
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                SQLiteDatabase myDB = helper.getWritableDatabase();
+                SQLiteDatabase db = helper.getWritableDatabase();
 
                 String selection = BookmarkDBHelper.COL_ID + "=?";
                 String[] selectArgs = new String[]{String.valueOf(id)};
 
-                Cursor cursor = myDB.query(BookmarkDBHelper.TABLE_NAME, null, selection, selectArgs,
+                Cursor cursor = db.query(BookmarkDBHelper.TABLE_NAME, null, selection, selectArgs,
                         null,null,null,null);
 
                 PlaceDto placeDto = new PlaceDto();
@@ -77,7 +77,7 @@ public class BookmarkActivity extends AppCompatActivity {
                     placeDto.setKeyWord(cursor.getString(cursor.getColumnIndex(BookmarkDBHelper.COL_KEYWORD)));
                 }
                 Intent intent = new Intent(BookmarkActivity.this, BookmarkPlaceActivity.class);
-                intent.putExtra("bookmarkDTO", placeDto);
+                intent.putExtra("bookmarkData", placeDto);
                 startActivity(intent);
             }
         });
@@ -92,10 +92,9 @@ public class BookmarkActivity extends AppCompatActivity {
                         .setPositiveButton("확인", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                if (placeDBManager.removeBookmark(id)) {
-                                    Toast.makeText(BookmarkActivity.this, "삭제 완료", Toast.LENGTH_SHORT).show();
-                                    //onResume에서 하는 기능 (삭제 후 다시 불러오기)
-                                    dataReader();
+                                if (placeDBManager.deleteBookmark(id)) {
+                                    Toast.makeText(BookmarkActivity.this, "삭제 성공", Toast.LENGTH_SHORT).show();
+                                    getBookmarkList(); // 삭제하면 그거 반영 후 다시 읽어오게 해야함
                                 } else {
                                     Toast.makeText(BookmarkActivity.this, "삭제 실패", Toast.LENGTH_SHORT).show();
                                 }
@@ -108,18 +107,17 @@ public class BookmarkActivity extends AppCompatActivity {
             }
         });
 
-        this.settingSideNavBar();
+        this.addDrawerMenu();
     }
 
     protected void onResume() {
         super.onResume();
-//        DB 에서 모든 레코드를 가져와 Adapter에 설정
-        dataReader();
+        getBookmarkList(); // 다시 읽어옴
 
         helper.close();
     }
 
-    protected void dataReader(){
+    protected void getBookmarkList(){
         SQLiteDatabase db = helper.getReadableDatabase();
         cursor = db.rawQuery("select * from " + BookmarkDBHelper.TABLE_NAME, null);
 
@@ -130,7 +128,6 @@ public class BookmarkActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//        cursor 사용 종료
         if (cursor != null) cursor.close();
     }
 
@@ -155,9 +152,9 @@ public class BookmarkActivity extends AppCompatActivity {
                         .setPositiveButton("종료", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                moveTaskToBack(true); // 태스크를 백그라운드로 이동
-                                finishAndRemoveTask(); // 액티비티 종료 + 태스크 리스트에서 지우기
-                                android.os.Process.killProcess(android.os.Process.myPid()); // 앱 프로세스 종료
+                                moveTaskToBack(true);
+                                finishAndRemoveTask();
+                                android.os.Process.killProcess(android.os.Process.myPid());
                             }
                         })
                         .setNegativeButton("취소", null)
@@ -168,7 +165,7 @@ public class BookmarkActivity extends AppCompatActivity {
         return true;
     }
 
-    public void settingSideNavBar() {
+    public void addDrawerMenu() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 

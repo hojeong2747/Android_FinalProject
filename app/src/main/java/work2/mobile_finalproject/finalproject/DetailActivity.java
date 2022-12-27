@@ -113,7 +113,7 @@ public class DetailActivity extends AppCompatActivity {
         else
             tvRating.setText(rating);
 
-        // photo_MetaData
+        // 사진 정보
         String placeId = intent.getStringExtra("id");
         getPlaceDetail(placeId);
         placeDto.setPlaceId(placeId);
@@ -121,11 +121,9 @@ public class DetailActivity extends AppCompatActivity {
         LatLng currentLoc = intent.getParcelableExtra("currentLoc");
         placeDto.setLat(currentLoc.latitude);
         placeDto.setLng(currentLoc.longitude);
-        Log.d("DetailActivity's loc : ", String.valueOf(currentLoc.latitude + " , " + currentLoc.longitude));
-
         placeDto.setKeyWord(intent.getStringExtra("keyword"));
 
-        this.settingSideNavBar();
+        this.addDrawerMenu();
     }
 
     private void getPlaceDetail(String placeId) {
@@ -135,17 +133,15 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onSuccess(FetchPlaceResponse response) {
                 Place place = response.getPlace();
-//                // Get the photo metadata.
+                // 사진 meta data 얻어옴
                 final List<PhotoMetadata> metadata = place.getPhotoMetadatas();
                 if (metadata == null || metadata.isEmpty()) {
-                    Log.w(TAG, "No photo metadata.");
+                    Log.w(TAG, "no data.");
                     imageView.setImageResource(R.mipmap.ic_launcher);
                     return;
                 }
                 final PhotoMetadata photoMetadata = metadata.get(0);
-                // Get the attribution text.
-                final String attributions = photoMetadata.getAttributions();
-                // Create a FetchPhotoRequest.
+
                 final FetchPhotoRequest photoRequest = FetchPhotoRequest.builder(photoMetadata)
                         .setMaxWidth(500) // Optional.
                         .setMaxHeight(300) // Optional.
@@ -156,8 +152,7 @@ public class DetailActivity extends AppCompatActivity {
                 }).addOnFailureListener((exception) -> {
                     if (exception instanceof ApiException) {
                         final ApiException apiException = (ApiException) exception;
-                        Log.e(TAG, "Place not found: " + exception.getMessage());
-                        final int statusCode = apiException.getStatusCode();
+                        Log.e(TAG, "not found " + exception.getMessage());
                         // TODO: Handle error with given status code.
                     }
                 });
@@ -169,11 +164,12 @@ public class DetailActivity extends AppCompatActivity {
         switch (v.getId()) {
             case R.id.btnCall:
                 AlertDialog.Builder builder = new AlertDialog.Builder(DetailActivity.this);
-                builder.setTitle("전화 DIALOG")
-                        .setMessage("전화 하시겠습니까?")
+                builder.setTitle("전화 걸기")
+                        .setMessage("전화를 하시겠습니까?")
                         .setPositiveButton("확인", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                // 전화 하려면 인텐트 필요
                                 Intent intent = new Intent("android.intent.action.DIAL", Uri.parse("tel:" + phone));
                                 startActivity(intent);
                             }
@@ -191,7 +187,7 @@ public class DetailActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 placeDBManager = new PlaceDBManager(DetailActivity.this);
-                                boolean result = placeDBManager.addNewBookmark(placeDto);
+                                boolean result = placeDBManager.addBookmark(placeDto);
                                 if(result) {
                                     // 알림 생성
                                     NotificationCompat.Builder builder = new NotificationCompat.Builder(DetailActivity.this, "MY_CHANNEL")
@@ -229,7 +225,7 @@ public class DetailActivity extends AppCompatActivity {
                         .show();
                 break; // 안 써서 오류 났었음
             case R.id.btnReview:
-                // 리뷰 작성
+                // 리뷰 작성 (작성 페이지에 공원명, 위치, 번호는 찍어줘야함)
                 Intent intent = new Intent(DetailActivity.this, ReviewAddActivity.class);
                 intent.putExtra("name", name);
                 intent.putExtra("address", address);
@@ -278,9 +274,9 @@ public class DetailActivity extends AppCompatActivity {
                         .setPositiveButton("종료", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                moveTaskToBack(true); // 태스크를 백그라운드로 이동
-                                finishAndRemoveTask(); // 액티비티 종료 + 태스크 리스트에서 지우기
-                                android.os.Process.killProcess(android.os.Process.myPid()); // 앱 프로세스 종료
+                                moveTaskToBack(true);
+                                finishAndRemoveTask();
+                                android.os.Process.killProcess(android.os.Process.myPid());
                             }
                         })
                         .setNegativeButton("취소", null)
@@ -291,7 +287,7 @@ public class DetailActivity extends AppCompatActivity {
         return true;
     }
 
-    public void settingSideNavBar() {
+    public void addDrawerMenu() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
