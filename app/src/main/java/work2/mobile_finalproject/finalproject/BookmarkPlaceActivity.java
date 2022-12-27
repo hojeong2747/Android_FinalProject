@@ -64,7 +64,7 @@ import noman.googleplaces.PlacesException;
 import noman.googleplaces.PlacesListener;
 
 public class BookmarkPlaceActivity extends AppCompatActivity implements OnMapReadyCallback {
-    final static String TAG = "BookmarPlaceActivity";
+    final static String TAG = "BookmarkPlaceActivity";
     final static int PERMISSION_REQ_CODE = 100;
 
     private TextView tvPlaceName;
@@ -89,7 +89,7 @@ public class BookmarkPlaceActivity extends AppCompatActivity implements OnMapRea
 
 
         Intent intent = getIntent();
-        placeDto = (PlaceDto) intent.getSerializableExtra("bookmarkDTO");
+        placeDto = (PlaceDto) intent.getSerializableExtra("bookmarkData");
 
         tvPlaceName = findViewById(R.id.tvPlaceName);
         tvPlaceName.setText(placeDto.getName());
@@ -113,12 +113,11 @@ public class BookmarkPlaceActivity extends AppCompatActivity implements OnMapRea
         this.settingSideNavBar();
     }
 
-    /*구글맵을 멤버변수로 로딩*/
+
     private void mapLoad() {
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapBM);
-        mapFragment.getMapAsync(this);      // 매개변수 this: MainActivity 가 OnMapReadyCallback 을 구현하므로
-
+        mapFragment.getMapAsync(this);
     }
 
     @Override
@@ -135,12 +134,9 @@ public class BookmarkPlaceActivity extends AppCompatActivity implements OnMapRea
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
-        mGoogleMap.setMyLocationEnabled(true); // 내 위치 버튼 활성화
+        mGoogleMap.setMyLocationEnabled(true);
 
-        // 지도 특정 위치에 마커 추가 - 지도 준비되고 마커 추가해야 하므로 onMapReady 에 작성
         markerOptions = new MarkerOptions();
-
-//        mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLoc, 15));
 
         mGoogleMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
             @Override
@@ -172,7 +168,7 @@ public class BookmarkPlaceActivity extends AppCompatActivity implements OnMapRea
         new NRPlaces.Builder().listener(placesListener)
                 .key(getResources().getString(R.string.api_key))
                 .latlng(currentLoc.latitude, currentLoc.longitude)
-                .radius(10000) // 현재 위치 반경 10km 중 검색 // 개수 제한이 있나 왜 안되지
+                .radius(10000) // 현재 위치 반경 10km 중 검색
                 .type(type)
                 .keyword("공원")
                 .build()
@@ -185,7 +181,6 @@ public class BookmarkPlaceActivity extends AppCompatActivity implements OnMapRea
 
         @Override
         public void onPlacesSuccess(final List<Place> places) {
-            //마커 추가
             runOnUiThread(() -> {
                 for (Place place : places) {
                     markerOptions.title(place.getName())
@@ -258,7 +253,7 @@ public class BookmarkPlaceActivity extends AppCompatActivity implements OnMapRea
 
         private void callDetailActivity(com.google.android.libraries.places.api.model.Place place) {
             Intent intent = new Intent(BookmarkPlaceActivity.this, DetailActivity.class);
-            intent.putExtra("id", place.getId()); // 사진 가져올 때 필요함
+            intent.putExtra("id", place.getId());
             intent.putExtra("name", place.getName());
             intent.putExtra("address", place.getAddress());
             intent.putExtra("uri", place.getWebsiteUri());
@@ -270,7 +265,6 @@ public class BookmarkPlaceActivity extends AppCompatActivity implements OnMapRea
                 intent.putExtra("rating", "no rating info");
             }
 
-            // 어떤 위치 보내는지 확인하기
             intent.putExtra("currentLoc", currentLoc);
             intent.putExtra("keyword", "공원");
 
@@ -278,7 +272,6 @@ public class BookmarkPlaceActivity extends AppCompatActivity implements OnMapRea
         }
 
         // 즐겨찾기 목록에 위치 실 주소는 있음. Geocoding 수행
-        /* 주소 → 위도/경도 변환 IntentService 실행 */
         private void placeGeocoding() {
             Intent intent = new Intent(BookmarkPlaceActivity.this, FetchPlaceGeocoding.class);
             intent.putExtra(Constants.RECEIVER, geocodingResultReceiver);
@@ -286,7 +279,6 @@ public class BookmarkPlaceActivity extends AppCompatActivity implements OnMapRea
             startService(intent);
         }
 
-        /* 주소 → 위도/경도 변환 ResultReceiver */
         class geocodingResultReceiver extends ResultReceiver {
             public geocodingResultReceiver(Handler handler) {
                 super(handler);
@@ -294,32 +286,13 @@ public class BookmarkPlaceActivity extends AppCompatActivity implements OnMapRea
 
             @Override
             protected void onReceiveResult(int resultCode, Bundle resultData) {
-                LatLng cafeLoc;
                 ArrayList<LatLng> latLngList = null;
                 if (resultCode == Constants.SUCCESS_RESULT) {
                     Toast.makeText(BookmarkPlaceActivity.this, "성공", Toast.LENGTH_SHORT).show();
                     if (resultData == null) return;
                     latLngList = (ArrayList<LatLng>) resultData.getSerializable(Constants.RESULT_DATA_KEY);
-                    if (latLngList == null) {
-//                    lat = (String) etLat.getHint();
-//                    lng = (String) etLng.getHint();
-                    } else {
-
-//                        LatLng latlng = latLngList.get(0);
-//                        cafeLoc = latlng;
-//                        cafeMarkerOptions.title(placeDto.getName());
-//                        cafeMarkerOptions.position(cafeLoc);
-//                        cafeMarkerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
-//
-//                        Marker newMarker = mGoogleMap.addMarker(cafeMarkerOptions);
-//                        newMarker.setTag(placeDto.getPlaceId());
-//                        newMarker.showInfoWindow();
-                    }
-
-                } else {
-//                etLat.setText(getString(R.string.no_address_found));
-//                etLng.setText(getString(R.string.no_address_found));
-                }
+                    if (latLngList == null) {} else {}
+                } else {}
             }
         }
 
@@ -342,10 +315,10 @@ public class BookmarkPlaceActivity extends AppCompatActivity implements OnMapRea
                 ex.printStackTrace();
             }
             takeCaptureMap();
-            //문자 발송
+
             if (mCurrentPhotoPath != null) {
                 Uri uri;
-                if (Build.VERSION.SDK_INT < 24) { //nougat 전 버전
+                if (Build.VERSION.SDK_INT < 24) {
                     uri = Uri.fromFile(photoFile);
                 } else {
                     uri = FileProvider.getUriForFile(BookmarkPlaceActivity.this,
@@ -377,7 +350,7 @@ public class BookmarkPlaceActivity extends AppCompatActivity implements OnMapRea
                         fos = new FileOutputStream(mCurrentPhotoPath);
                         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
                         sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file:/" + mCurrentPhotoPath)));
-                        Log.d(TAG, "캡쳐 완료!");
+                        Log.d(TAG, "캡쳐 성공");
 
                         fos.flush();
                         fos.close();
@@ -391,7 +364,6 @@ public class BookmarkPlaceActivity extends AppCompatActivity implements OnMapRea
             mGoogleMap.snapshot(snapshotReadyCallback);
         }
 
-        /*현재 시간 정보를 사용하여 파일 정보 생성*/
         private File createImageFile() throws IOException {
             // Create an image file name
             String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -408,8 +380,6 @@ public class BookmarkPlaceActivity extends AppCompatActivity implements OnMapRea
             return image;
         }
 
-
-        /* 필요 permission 요청 */
         private boolean checkPermission() {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if (checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
@@ -431,16 +401,13 @@ public class BookmarkPlaceActivity extends AppCompatActivity implements OnMapRea
             if (requestCode == PERMISSION_REQ_CODE) {
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED
                         && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-                    // 퍼미션을 획득하였을 경우 맵 로딩 실행
                     mapLoad();
                 } else {
-                    // 퍼미션 미획득 시 액티비티 종료
-                    Toast.makeText(this, "앱 실행을 위해 권한 허용이 필요함", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "권한 없음", Toast.LENGTH_SHORT).show();
                     finish();
                 }
             }
         }
-
 
         // menu
         public boolean onCreateOptionsMenu(Menu menu) {
@@ -462,9 +429,9 @@ public class BookmarkPlaceActivity extends AppCompatActivity implements OnMapRea
                             .setPositiveButton("종료", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    moveTaskToBack(true); // 태스크를 백그라운드로 이동
-                                    finishAndRemoveTask(); // 액티비티 종료 + 태스크 리스트에서 지우기
-                                    android.os.Process.killProcess(android.os.Process.myPid()); // 앱 프로세스 종료
+                                    moveTaskToBack(true);
+                                    finishAndRemoveTask();
+                                    android.os.Process.killProcess(android.os.Process.myPid());
                                 }
                             })
                             .setNegativeButton("취소", null)
